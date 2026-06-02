@@ -1,0 +1,101 @@
+{
+  "version": 1,
+  "author": "Student 1",
+  "editor": "wokwi",
+  "parts": [
+    {
+      "type": "board-esp32-s3-devkitc-1",
+      "id": "esp",
+      "top": -0.18,
+      "left": 4.57,
+      "attrs": { "env": "micropython-20231227-v1.22.0", "flashSize": "8" }
+    },
+    {
+      "type": "wokwi-rgb-led",
+      "id": "rgb1",
+      "top": -82.4,
+      "left": -56.5,
+      "attrs": { "common": "cathode" }
+    },
+    {
+      "type": "wokwi-slide-potentiometer",
+      "id": "pot1",
+      "top": 82,
+      "left": 244,
+      "rotate": 270,
+      "attrs": { "travelLength": "30" }
+    },
+    {
+      "type": "wokwi-slide-potentiometer",
+      "id": "pot2",
+      "top": 82,
+      "left": 157.6,
+      "rotate": 270,
+      "attrs": { "travelLength": "30" }
+    },
+    {
+      "type": "wokwi-slide-potentiometer",
+      "id": "pot3",
+      "top": 82,
+      "left": 71.2,
+      "rotate": 270,
+      "attrs": { "travelLength": "30" }
+    },
+    {
+      "type": "wokwi-led",
+      "id": "led1",
+      "top": -13.2,
+      "left": -92.2,
+      "attrs": { "color": "red" }
+    },
+    {
+      "type": "wokwi-led",
+      "id": "led2",
+      "top": -13.2,
+      "left": -121,
+      "attrs": { "color": "green" }
+    },
+    {
+      "type": "wokwi-led",
+      "id": "led3",
+      "top": -13.2,
+      "left": -149.8,
+      "attrs": { "color": "blue" }
+    },
+    {
+      "type": "wokwi-servo",
+      "id": "servo1",
+      "top": 56.6,
+      "left": -267,
+      "rotate": 270,
+      "attrs": {}
+    }
+  ],
+  "connections": [
+    [ "esp:TX", "$serialMonitor:RX", "", [] ],
+    [ "esp:RX", "$serialMonitor:TX", "", [] ],
+    [ "esp:6", "rgb1:B", "blue", [ "h0" ] ],
+    [ "esp:7", "rgb1:G", "green", [ "h0" ] ],
+    [ "esp:15", "rgb1:R", "red", [ "h0" ] ],
+    [ "esp:GND.2", "pot3:GND", "black", [ "h105.6" ] ],
+    [ "esp:GND.2", "pot2:GND", "black", [ "v0", "h249.6" ] ],
+    [ "esp:GND.2", "pot1:GND", "black", [ "h240", "v5.2" ] ],
+    [ "esp:6", "led3:A", "blue", [ "h-28.85", "v-28.8", "h-124.8" ] ],
+    [ "esp:7", "led2:A", "green", [ "h-38.45", "v-28.8", "h-76.8" ] ],
+    [ "esp:15", "led1:A", "red", [ "h-57.65", "v-57.6", "h-19.2" ] ],
+    [ "esp:GND.1", "led3:C", "#8f4814", [ "h-48.05", "v-115.2", "h-48" ] ],
+    [ "esp:GND.1", "led2:C", "#8f4814", [ "h-48.05", "v-115.2", "h-67.2" ] ],
+    [ "esp:GND.1", "led1:C", "#8f4814", [ "h-48.05", "v-115.2", "h-96" ] ],
+    [ "esp:3V3.2", "pot3:VCC", "cyan", [ "h-0.05", "v-52.8", "h124.8", "v292.8", "h28.8" ] ],
+    [ "esp:3V3.2", "pot2:VCC", "cyan", [ "h-0.05", "v-52.8", "h124.8", "v292.8", "h139.2" ] ],
+    [ "esp:3V3.2", "pot1:VCC", "cyan", [ "h-0.05", "v-52.8", "h124.8", "v292.8", "h249.6" ] ],
+    [ "esp:1", "pot1:SIG", "red", [ "h28.8", "v211.2", "h259.2" ] ],
+    [ "esp:2", "pot2:SIG", "green", [ "h19.2", "v192", "h172.8" ] ],
+    [ "esp:10", "pot3:SIG", "blue", [ "h-19.25", "v115.2", "h192" ] ],
+    [ "esp:GND.1", "rgb1:COM", "#8f4814", [ "h0" ] ],
+    [ "esp:GND.1", "servo1:GND", "#8f4814", [ "h-105.65", "h-96" ] ],
+    [ "esp:5V", "servo1:V+", "red", [ "h0" ] ],
+    [ "esp:14", "servo1:PWM", "green", [ "h0" ] ]
+  ],
+  "dependencies": {}
+}
