@@ -1,0 +1,52 @@
+{
+  "version": 1,
+  "author": "Student 1",
+  "editor": "wokwi",
+  "parts": [
+    {
+      "type": "board-esp32-s3-devkitc-1",
+      "id": "esp",
+      "top": 150.47,
+      "left": 203.68,
+      "rotate": 90,
+      "attrs": {}
+    },
+    {
+      "type": "wokwi-membrane-keypad",
+      "id": "keypad1",
+      "top": -126.8,
+      "left": 144.3,
+      "attrs": { "columns": "3" }
+    },
+    {
+      "type": "wokwi-lcd1602",
+      "id": "lcd1",
+      "top": -281.6,
+      "left": 92,
+      "attrs": { "pins": "i2c" }
+    },
+    {
+      "type": "wokwi-text",
+      "id": "text1",
+      "top": -307.2,
+      "left": 192,
+      "attrs": { "text": "Phone - טלפון" }
+    }
+  ],
+  "connections": [
+    [ "esp:TX", "$serialMonitor:RX", "", [] ],
+    [ "esp:RX", "$serialMonitor:TX", "", [] ],
+    [ "esp:9", "keypad1:R1", "green", [ "v0" ] ],
+    [ "keypad1:R3", "esp:3", "green", [ "v0" ] ],
+    [ "keypad1:R4", "esp:8", "green", [ "v0" ] ],
+    [ "keypad1:C1", "esp:18", "green", [ "v0" ] ],
+    [ "keypad1:C2", "esp:17", "green", [ "v0" ] ],
+    [ "esp:16", "keypad1:C3", "green", [ "v0" ] ],
+    [ "esp:46", "keypad1:R2", "green", [ "v0" ] ],
+    [ "lcd1:GND", "esp:GND.1", "black", [ "h-38.4", "v460.8", "h96" ] ],
+    [ "lcd1:VCC", "esp:5V", "red", [ "h-28.8", "v441.7", "h96" ] ],
+    [ "lcd1:SDA", "esp:14", "green", [ "h-19.2", "v422.6", "h96" ] ],
+    [ "lcd1:SCL", "esp:13", "green", [ "h-9.6", "v403.5", "h96" ] ]
+  ],
+  "dependencies": {}
+}
