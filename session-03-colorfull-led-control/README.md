@@ -5,7 +5,7 @@ An embedded system project written in **MicroPython** that measures distance usi
 ## Overview
 This project utilizes an HC-SR04 ultrasonic distance sensor to monitor proximity. Based on the measured distance, the system triggers different alert levels using LEDs and a buzzer (piezo), making it ideal for applications like parking assistants or proximity warning systems.
 
-![System Simulation](simulationIimage.png)
+![System Simulation](simulationImage.png)
 
 ## How to Run the Project
 
