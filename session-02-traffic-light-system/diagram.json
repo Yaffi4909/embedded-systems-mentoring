@@ -1,0 +1,62 @@
+{
+  "version": 1,
+  "author": "Student 1",
+  "editor": "wokwi",
+  "parts": [
+    {
+      "type": "board-esp32-devkit-c-v4",
+      "id": "esp",
+      "top": -67.2,
+      "left": -33.56,
+      "attrs": { "env": "micropython-20231227-v1.22.0" }
+    },
+    {
+      "type": "wokwi-led-strip",
+      "id": "strip1",
+      "top": -31.2,
+      "left": -109.3,
+      "rotate": 270,
+      "attrs": { "pixels": "3", "pixelShape": "circle" }
+    },
+    {
+      "type": "wokwi-led-strip",
+      "id": "strip2",
+      "top": 58.9,
+      "left": -238.6,
+      "rotate": 180,
+      "attrs": { "pixels": "3", "pixelShape": "circle" }
+    },
+    {
+      "type": "wokwi-led-strip",
+      "id": "strip4",
+      "top": 59.7,
+      "left": 96,
+      "attrs": { "pixels": "3", "pixelShape": "circle" }
+    },
+    {
+      "type": "wokwi-led-strip",
+      "id": "strip5",
+      "top": 169,
+      "left": -158.1,
+      "rotate": 90,
+      "attrs": { "pixels": "3", "pixelShape": "circle" }
+    }
+  ],
+  "connections": [
+    [ "esp:TX", "$serialMonitor:RX", "", [] ],
+    [ "esp:RX", "$serialMonitor:TX", "", [] ],
+    [ "strip1:VSS", "esp:5V", "red", [ "v0" ] ],
+    [ "esp:GND.1", "strip1:VDD", "#8f4814", [ "h0" ] ],
+    [ "esp:13", "strip1:DIN", "green", [ "h0" ] ],
+    [ "strip5:DIN", "esp:14", "green", [ "v0" ] ],
+    [ "esp:5V", "strip5:VSS", "red", [ "h0" ] ],
+    [ "esp:GND.1", "strip5:VDD", "#8f4814", [ "h0" ] ],
+    [ "esp:5V", "strip2:VSS", "red", [ "h-105.45", "v-67.2", "h-19.2" ] ],
+    [ "esp:GND.1", "strip2:VDD", "#8f4814", [ "h0" ] ],
+    [ "esp:27", "strip2:DIN", "green", [ "h-115.05", "v19.2", "h-9.6" ] ],
+    [ "esp:5V", "strip4:VSS", "red", [ "v28.8", "h163.35" ] ],
+    [ "strip4:VDD", "esp:GND.1", "#8f4814", [ "h-19.2", "v76.8", "h-163.2", "v-67.2" ] ],
+    [ "esp:15", "strip4:DIN", "green", [ "h19.2", "v-18.8" ] ]
+  ],
+  "dependencies": {}
+}
