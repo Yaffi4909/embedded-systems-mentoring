@@ -17,7 +17,7 @@ A real-time simulation of a digital toy phone system developed in **C++** utiliz
 
 | System Idle / Number Input | Active Simulation Call |
 | :---: | :---: |
-| ![Input Screenshot](screenshot1.png) | ![Calling Screenshot](screenshot2.png) |
+| ![Input Screenshot](simulation1.png) | ![Calling Screenshot](simulation2.png) |
 
 
 ---
