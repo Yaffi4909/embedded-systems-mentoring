@@ -1,58 +1,273 @@
-:Author: yaffi_yud
-:Email:
-:Date: 07/06/2026
-:Revision: version#
-:License: Public Domain
+# Session 11 – WiFi, HTTP GET & POST with ESP32
 
-= Project: {Project}
+## Overview
 
-Describe your project
+In this session, we learned how to connect an ESP32 to WiFi and send/receive data over the internet using HTTP requests.
 
-== Step 1: Installation
-Please describe the steps to install this project.
+The project combines:
 
-For example:
+* ESP32 WiFi connection
+* HTTP GET request
+* HTTP POST request
+* JSON data format
+* ArduinoJson library
+* FreeRTOS tasks
+* Sensor data sending
 
-1. Open this file
-2. Edit as you like
-3. Release to the World!
+---
 
-== Step 2: Assemble the circuit
+## What I Learned
 
-Assemble the circuit following the diagram layout.png attached to the sketch
+### WiFi Connection
 
-== Step 3: Load the code
+The ESP32 connects to a WiFi network using:
 
-Upload the code contained in this sketch on to your board
+```cpp
+WiFi.begin(WIFI_SSID, WIFI_PASS);
+```
 
-=== Folder structure
+Before sending HTTP requests, the code checks:
 
-....
- sketch123                => Arduino sketch folder
-  ├── sketch123.ino       => main Arduino file
-  ├── schematics.png      => (optional) an image of the required schematics
-  ├── layout.png          => (optional) an image of the layout
-  └── ReadMe.adoc         => this file
-....
+```cpp
+WiFi.status() == WL_CONNECTED
+```
 
-=== License
-This project is released under a {License} License.
+---
 
-=== Contributing
-To contribute to this project please contact: 
+### HTTP Protocol
 
-=== BOM
-Add the bill of the materials you need for this project.
+HTTP is used for communication between a client and a server.
 
-|===
-| ID | Part name      | Part number | Quantity
-| R1 | 10k Resistor   | 1234-abcd   | 10       
-| L1 | Red LED        | 2345-asdf   | 5        
-| A1 | Arduino Zero   | ABX00066    | 1        
-|===
+In this project:
 
+* The ESP32 is the client
+* The server receives or sends data
+* The ESP32 sends requests and reads responses
 
-=== Help
-This document is written in the _AsciiDoc_ format, a markup language to describe documents. 
-If you need help you can search the http://www.methods.co.nz/asciidoc[AsciiDoc homepage]
-or consult the http://powerman.name/doc/asciidoc[AsciiDoc cheatsheet]
+---
+
+### GET Request
+
+A GET request is used to receive data from a server.
+
+Example endpoint:
+
+```text
+http://api.open-meteo.com/v1/forecast?latitude=32&longitude=34&current_weather=true
+```
+
+The response is returned in JSON format.
+
+---
+
+### POST Request
+
+A POST request is used to send data to a server.
+
+Example endpoint:
+
+```text
+http://httpbin.org/post
+```
+
+The ESP32 sends sensor data as JSON.
+
+Example JSON:
+
+```json
+{
+  "reading_id": 1,
+  "temperature": 25.1,
+  "humidity": 60.2,
+  "distance": 30.5,
+  "device": "RoboGreeno-ESP32"
+}
+```
+
+---
+
+## Libraries Used
+
+```cpp
+#include <WiFi.h>
+#include <HTTPClient.h>
+#include <ArduinoJson.h>
+#include <DHT.h>
+```
+
+---
+
+## FreeRTOS Tasks
+
+### sensorTask
+
+Reads sensor values every 2 seconds.
+
+Updates:
+
+```cpp
+g_temp
+g_hum
+g_distance
+```
+
+---
+
+### wifiTask
+
+Sends sensor data to the server every 5 seconds using HTTP POST.
+
+Stack size:
+
+```cpp
+8192
+```
+
+---
+
+### displayTask
+
+Prints:
+
+* Temperature
+* Humidity
+* Distance
+* WiFi status
+* POST status
+
+to the Serial Monitor.
+
+---
+
+### bleTask
+
+Sends the latest sensor data using BLE notifications.
+
+---
+
+## Important Notes
+
+### Wokwi WiFi
+
+```cpp
+const char* WIFI_SSID = "Wokwi-GUEST";
+const char* WIFI_PASS = "";
+```
+
+For a real ESP32 board, use your actual WiFi credentials.
+
+---
+
+### Check WiFi Before HTTP
+
+```cpp
+if (WiFi.status() == WL_CONNECTED)
+```
+
+---
+
+### Always Free Resources
+
+```cpp
+http.end();
+```
+
+---
+
+### JSON Header
+
+```cpp
+http.addHeader("Content-Type", "application/json");
+```
+
+---
+
+## Common Problems
+
+### WiFi Stuck on Connecting
+
+Possible causes:
+
+* Wrong SSID
+* Wrong password
+* Using Wokwi credentials on real hardware
+* Arduino Cloud credentials mismatch
+
+---
+
+### ArduinoJson Error
+
+```text
+ArduinoJson.h: No such file or directory
+```
+
+Install ArduinoJson from Library Manager.
+
+---
+
+### HTTPClient Error
+
+Correct:
+
+```cpp
+#include <HTTPClient.h>
+
+HTTPClient http;
+```
+
+Wrong:
+
+```cpp
+HttpClient http;
+```
+
+---
+
+### Arduino Cloud Conflicts
+
+Avoid using names already defined in thingProperties.h:
+
+```cpp
+SSID
+PASS
+temp
+hum
+distance
+```
+
+Use:
+
+```cpp
+WIFI_SSID
+WIFI_PASS
+g_temp
+g_hum
+g_distance
+```
+
+---
+
+## Project Structure
+
+```text
+session-11/
+│
+├── session11_wifi_http.ino
+└── README.md
+```
+
+---
+
+## Commit Message
+
+```text
+Session 11 WiFi HTTP GET and POST with sensor data
+```
+
+---
+
+## Summary
+
+In this session, the ESP32 was connected to WiFi and used HTTP requests to communicate with servers.
+
+The project sends sensor readings using POST requests, receives data using GET requests, and uses FreeRTOS tasks so sensors, WiFi, BLE, and display operations can run simultaneously.
