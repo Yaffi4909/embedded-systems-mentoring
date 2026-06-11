@@ -2,7 +2,7 @@
 
 ## Overview
 
-In this session, we learned how to connect an ESP32 to WiFi and send/receive data over the internet using HTTP requests.
+In this session, I learned how to connect a real ESP32 board to WiFi using Arduino IDE and how to send and receive data over the internet using HTTP requests.
 
 The project combines:
 
@@ -13,6 +13,23 @@ The project combines:
 * ArduinoJson library
 * FreeRTOS tasks
 * Sensor data sending
+* BLE notifications
+
+---
+
+## Hardware and Environment
+
+This project was tested on a real ESP32 board using Arduino IDE.
+
+WiFi credentials are defined in the code:
+
+```cpp
+const char* WIFI_SSID = "ZONG MBB-E5573-24A2";
+const char* WIFI_PASSWORD = "********";
+```
+
+> The real WiFi password should not be uploaded to GitHub.
+> A placeholder should be used instead.
 
 ---
 
@@ -23,7 +40,7 @@ The project combines:
 The ESP32 connects to a WiFi network using:
 
 ```cpp
-WiFi.begin(WIFI_SSID, WIFI_PASS);
+WiFi.begin(WIFI_SSID, WIFI_PASSWORD);
 ```
 
 Before sending HTTP requests, the code checks:
@@ -57,6 +74,11 @@ http://api.open-meteo.com/v1/forecast?latitude=32&longitude=34&current_weather=t
 ```
 
 The response is returned in JSON format.
+
+The code parses the response and prints weather data such as:
+
+* current temperature
+* wind speed
 
 ---
 
@@ -95,15 +117,27 @@ Example JSON:
 #include <DHT.h>
 ```
 
+Additional libraries used for BLE:
+
+```cpp
+#include <BLEDevice.h>
+#include <BLEUtils.h>
+#include <BLEServer.h>
+```
+
 ---
 
 ## FreeRTOS Tasks
 
+The project uses FreeRTOS in order to run several actions at the same time.
+
+---
+
 ### sensorTask
 
-Reads sensor values every 2 seconds.
+This task reads the sensor values every 2 seconds.
 
-Updates:
+It updates the global variables:
 
 ```cpp
 g_temp
@@ -115,66 +149,105 @@ g_distance
 
 ### wifiTask
 
-Sends sensor data to the server every 5 seconds using HTTP POST.
+This task sends the sensor data to the server every 5 seconds using HTTP POST.
 
-Stack size:
+The WiFi task uses a larger stack size:
 
 ```cpp
 8192
 ```
 
+WiFi and HTTP operations need more memory than simple sensor tasks.
+
 ---
 
 ### displayTask
 
-Prints:
+This task prints the current data to the Serial Monitor.
 
-* Temperature
-* Humidity
-* Distance
+It displays:
+
+* temperature
+* humidity
+* distance
 * WiFi status
 * POST status
-
-to the Serial Monitor.
 
 ---
 
 ### bleTask
 
-Sends the latest sensor data using BLE notifications.
+This task sends the latest sensor data using BLE notify.
+
+The BLE task uses:
+
+```cpp
+4096
+```
+
+as its stack size.
 
 ---
 
 ## Important Notes
 
-### Wokwi WiFi
+### Real ESP32 WiFi
+
+This project runs on a real ESP32 board.
+
+Example structure:
 
 ```cpp
-const char* WIFI_SSID = "Wokwi-GUEST";
-const char* WIFI_PASS = "";
+const char* WIFI_SSID = "YOUR_WIFI_NAME";
+const char* WIFI_PASSWORD = "YOUR_WIFI_PASSWORD";
 ```
 
-For a real ESP32 board, use your actual WiFi credentials.
+For GitHub, the real password should be replaced with:
+
+```cpp
+const char* WIFI_PASSWORD = "********";
+```
 
 ---
 
-### Check WiFi Before HTTP
+### Wokwi WiFi
+
+If the project is tested in Wokwi, the default WiFi credentials are:
+
+```cpp
+const char* WIFI_SSID = "Wokwi-GUEST";
+const char* WIFI_PASSWORD = "";
+```
+
+---
+
+### Always Check WiFi Status
+
+Before every HTTP request, the code checks:
 
 ```cpp
 if (WiFi.status() == WL_CONNECTED)
 ```
 
+This prevents HTTP requests from running when WiFi is not connected.
+
 ---
 
-### Always Free Resources
+### Always Call http.end()
+
+After every HTTP request, the code calls:
 
 ```cpp
 http.end();
 ```
 
+This frees resources and prevents memory problems.
+
 ---
 
-### JSON Header
+### Use Correct Content-Type
+
+For POST requests with JSON, the code adds this header:
 
 ```cpp
 http.addHeader("Content-Type", "application/json");
@@ -186,28 +259,37 @@ http.addHeader("Content-Type", "application/json");
 
 ### WiFi Stuck on Connecting
 
-Possible causes:
+If the Serial Monitor prints many dots like this:
 
-* Wrong SSID
-* Wrong password
-* Using Wokwi credentials on real hardware
-* Arduino Cloud credentials mismatch
+```text
+WiFi Connecting................................
+```
+
+possible causes are:
+
+* wrong WiFi name
+* wrong WiFi password
+* the network is not 2.4GHz
+* the ESP32 cannot see the network
+* another connection method is running at the same time
 
 ---
 
 ### ArduinoJson Error
 
+If this error appears:
+
 ```text
 ArduinoJson.h: No such file or directory
 ```
 
-Install ArduinoJson from Library Manager.
+the ArduinoJson library must be installed from the Library Manager.
 
 ---
 
 ### HTTPClient Error
 
-Correct:
+Correct usage:
 
 ```cpp
 #include <HTTPClient.h>
@@ -215,17 +297,19 @@ Correct:
 HTTPClient http;
 ```
 
-Wrong:
+Wrong usage:
 
 ```cpp
 HttpClient http;
 ```
 
+`HTTPClient` is the ESP32 HTTP client library.
+
 ---
 
 ### Arduino Cloud Conflicts
 
-Avoid using names already defined in thingProperties.h:
+If the project uses Arduino Cloud, `thingProperties.h` may already define names such as:
 
 ```cpp
 SSID
@@ -235,11 +319,11 @@ hum
 distance
 ```
 
-Use:
+To avoid conflicts, the main code uses different names:
 
 ```cpp
 WIFI_SSID
-WIFI_PASS
+WIFI_PASSWORD
 g_temp
 g_hum
 g_distance
@@ -250,10 +334,16 @@ g_distance
 ## Project Structure
 
 ```text
-session-11/
+session-11-add-wifi-to-the-system/
 │
-├── session11_wifi_http.ino
-└── README.md
+└── Untitled_jun07a/
+    │
+    ├── Untitled_jun07a.ino
+    ├── Arduino_secrets.h
+    ├── secrets.json
+    ├── Untitled_jun07a.ino
+    └── thingProperties.h
+
 ```
 
 ---
@@ -268,6 +358,6 @@ Session 11 WiFi HTTP GET and POST with sensor data
 
 ## Summary
 
-In this session, the ESP32 was connected to WiFi and used HTTP requests to communicate with servers.
+In this session, I connected a real ESP32 board to WiFi and used HTTP requests to communicate with servers.
 
-The project sends sensor readings using POST requests, receives data using GET requests, and uses FreeRTOS tasks so sensors, WiFi, BLE, and display operations can run simultaneously.
+The project sends sensor readings using POST requests, receives weather data using GET requests, and uses FreeRTOS tasks so sensors, WiFi, BLE, and display operations can work together.
