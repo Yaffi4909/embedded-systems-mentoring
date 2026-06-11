@@ -1,58 +1,157 @@
-:Author: yaffi_yud
-:Email:
-:Date: 07/06/2026
-:Revision: version#
-:License: Public Domain
+# Session 10 – BLE Advertising with Sensor Data
 
-= Project: {Project}
+## Overview
 
-Describe your project
+In this session I learned how to use Bluetooth Low Energy (BLE) on the ESP32 to broadcast sensor data wirelessly.
 
-== Step 1: Installation
-Please describe the steps to install this project.
+The project combines BLE Advertising with sensor readings and FreeRTOS tasks. The ESP32 advertises temperature, humidity, and distance values that can be viewed by nearby BLE devices.
 
-For example:
+---
 
-1. Open this file
-2. Edit as you like
-3. Release to the World!
+## Objectives
 
-== Step 2: Assemble the circuit
+* Understand BLE fundamentals
+* Learn the difference between BLE and Classic Bluetooth
+* Create BLE Services and Characteristics
+* Broadcast sensor data using BLE Advertising
+* Use FreeRTOS tasks to manage multiple operations simultaneously
+* Display sensor data through BLE without wired communication
 
-Assemble the circuit following the diagram layout.png attached to the sketch
+---
 
-== Step 3: Load the code
+## Hardware
 
-Upload the code contained in this sketch on to your board
+* ESP32
+* DHT22 Temperature and Humidity Sensor
+* HC-SR04 Ultrasonic Distance Sensor
+* LED
+* USB Cable
 
-=== Folder structure
+---
 
-....
- sketch123                => Arduino sketch folder
-  ├── sketch123.ino       => main Arduino file
-  ├── schematics.png      => (optional) an image of the required schematics
-  ├── layout.png          => (optional) an image of the layout
-  └── ReadMe.adoc         => this file
-....
+## Software
 
-=== License
-This project is released under a {License} License.
+* Arduino IDE
+* ESP32 BLE Library
+* FreeRTOS
+* Wokwi Simulator
 
-=== Contributing
-To contribute to this project please contact: 
+---
 
-=== BOM
-Add the bill of the materials you need for this project.
+## Features
 
-|===
-| ID | Part name      | Part number | Quantity
-| R1 | 10k Resistor   | 1234-abcd   | 10       
-| L1 | Red LED        | 2345-asdf   | 5        
-| A1 | Arduino Zero   | ABX00066    | 1        
-|===
+### Sensor Task
 
+Reads:
 
-=== Help
-This document is written in the _AsciiDoc_ format, a markup language to describe documents. 
-If you need help you can search the http://www.methods.co.nz/asciidoc[AsciiDoc homepage]
-or consult the http://powerman.name/doc/asciidoc[AsciiDoc cheatsheet]
+* Temperature
+* Humidity
+* Distance
+
+Updates global variables periodically.
+
+### BLE Task
+
+Creates:
+
+* BLE Service
+* BLE Characteristics
+
+Broadcasts sensor values through BLE.
+
+### Display Task
+
+Prints formatted sensor data to the Serial Monitor.
+
+### LED Task
+
+Blinks an LED to indicate the system is running.
+
+---
+
+## BLE Data Format
+
+Example advertised data:
+
+```text
+T:25.1 H:60.2 D:30.5cm
+```
+
+Example JSON format:
+
+```json
+{
+  "T":25.1,
+  "H":60.2,
+  "D":30.5
+}
+```
+
+---
+
+## FreeRTOS Tasks
+
+| Task        | Purpose         | Priority |
+| ----------- | --------------- | -------- |
+| sensorTask  | Read sensors    | 1        |
+| bleTask     | Update BLE data | 1        |
+| displayTask | Serial output   | 2        |
+| blinkTask   | LED indication  | 0        |
+
+---
+
+## BLE Configuration
+
+### Service UUID
+
+```cpp
+4fafc201-1fb5-459e-8fcc-c5c9c331914b
+```
+
+### Characteristics
+
+* Temperature Characteristic
+* Humidity Characteristic
+* Distance Characteristic
+
+---
+
+## What I Learned
+
+* How BLE Advertising works
+* Difference between GAP and GATT
+* Creating BLE Services and Characteristics
+* Updating BLE values dynamically
+* Using notify() for BLE updates
+* Managing multiple tasks with FreeRTOS
+* Broadcasting sensor information wirelessly
+
+---
+
+## Repository Structure
+
+```text
+session-10-add-ble-to-sensor/
+│
+└── Untitled_jun07a/
+   │
+   ├── Untitled_jun07a.ino
+   ├── arduino_secrets.h
+   ├── README.md
+   ├── thingProperties.h
+   └── sketch.json
+```
+
+---
+
+## Result
+
+The ESP32 successfully broadcasts live sensor readings using BLE. Sensor data is updated continuously and can be viewed through BLE monitoring tools or simulation environments.
+
+---
+
+## Author
+
+Session 10 – BLE Advertising with Sensor Data
+
+Embedded Systems Bootcamp
