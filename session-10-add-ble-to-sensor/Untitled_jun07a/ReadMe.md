@@ -91,12 +91,12 @@ Example JSON format:
 
 ## FreeRTOS Tasks
 
-| Task        | Purpose         | Priority |
-| ----------- | --------------- | -------- |
-| sensorTask  | Read sensors    | 1        |
-| bleTask     | Update BLE data | 1        |
-| displayTask | Serial output   | 2        |
-| blinkTask   | LED indication  | 0        |
+| Task | Purpose | Priority |
+|------|---------|----------|
+| sensorTask | Read sensors | 1 |
+| bleTask | Update BLE data | 1 |
+| displayTask | Serial output | 2 |
+| blinkTask | LED indication | 0 |
 
 ---
 
