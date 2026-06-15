@@ -1,0 +1,8 @@
+# Smart Weather Station Libraries
+
+ArduinoJson
+ArduinoIoTCloud
+Arduino_ConnectionHandler
+ArduinoBLE
+ArduinoHttpClient
+DHT sensor library for ESPx
