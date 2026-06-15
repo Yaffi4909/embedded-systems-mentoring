@@ -154,7 +154,8 @@ The files uploaded to GitHub should be organized according to the project instru
 robogreeno-emb/
 └── mini-project/
     ├── starter_code/
-    │   └── starter_code.ino
+    │   ├── starter_code.ino
+    │   └── thingProperties.h
     │
     ├── final_code/
     │   ├── final_code.ino
