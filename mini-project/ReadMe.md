@@ -146,9 +146,9 @@ The POST data includes:
 * Light level
 * Presence status
 
-## Required Repository Structure
+## Repository Structure
 
-The files uploaded to GitHub should be organized according to the project instructions:
+The files are organized in GitHub in this hierarchy:
 
 ```text
 robogreeno-emb/
@@ -174,6 +174,7 @@ robogreeno-emb/
 | File / Folder                 | Description                             |
 | ----------------------------- | --------------------------------------- |
 | starter_code/starter_code.ino | Initial starter version of the project  |
+| starter_code/thingProperties.h| Arduino Cloud generated properties file |
 | final_code/final_code.ino     | Final Arduino code                      |
 | final_code/thingProperties.h  | Arduino Cloud generated properties file |
 | wokwi/diagram.json            | Wokwi circuit diagram                   |
@@ -181,25 +182,7 @@ robogreeno-emb/
 | README.md                     | Project documentation                   |
 | dashboard_screenshot.png      | Screenshot of Arduino Cloud Dashboard   |
 
-## Secret Files
 
-The file `arduino_secrets.h` contains private WiFi and Arduino Cloud credentials.
-
-This file should NOT be uploaded to GitHub.
-
-Add it to `.gitignore`:
-
-```gitignore
-arduino_secrets.h
-```
-
-Example:
-
-```cpp
-#define SECRET_SSID "your_wifi_name"
-#define SECRET_OPTIONAL_PASS "your_wifi_password"
-#define SECRET_DEVICE_KEY "your_device_key"
-```
 
 ## How to Run
 
@@ -235,24 +218,7 @@ Tested:
 * HTTP POST structure
 * Serial Monitor output
 
-Not physically tested:
 
-* DHT22 sensor, because the real sensor was not available.
-
-The DHT22 code is included and ready for use when the sensor is connected.
-
-## Submission Checklist
-
-| Requirement                                           | Status |
-| ----------------------------------------------------- | ------ |
-| All 3 sensors implemented                             | Done   |
-| FreeRTOS tasks implemented                            | Done   |
-| Arduino Cloud dashboard with 5 variables              | Done   |
-| Presence detection implemented                        | Done   |
-| BLE advertising implemented                           | Done   |
-| GitHub repository structure according to instructions | Done   |
-| README file included                                  | Done   |
-| Dashboard screenshot included                         | To add |
 
 ## Author
 
