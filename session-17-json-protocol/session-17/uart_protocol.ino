@@ -1,10 +1,5 @@
 #include <ArduinoJson.h>
-
-#define RXD2 4
-#define TXD2 5
-
-float g_joints[18];
-uint16_t g_last_seq = 0;
+#include "config.h"
 
 void sendACK(uint16_t seq, int applied) {
   StaticJsonDocument<128> doc;
@@ -18,6 +13,10 @@ void sendACK(uint16_t seq, int applied) {
   String out;
   serializeJson(doc, out);
   Serial2.println(out);
+
+  Serial.print("send ACK : seq = ");
+  Serial.println(seq);
+
 }
 
 void sendERR(uint16_t seq, const char* code, const char* msg) {
@@ -32,6 +31,11 @@ void sendERR(uint16_t seq, const char* code, const char* msg) {
   String out;
   serializeJson(doc, out);
   Serial2.println(out);
+
+  Serial.print("send ERR : seq = ");
+  Serial.print(seq);
+  Serial.print(", ");
+  Serial.println(msg);
 }
 
 void parseFrame(String raw) {
@@ -79,12 +83,8 @@ void parseFrame(String raw) {
     Serial.print(" speed=");
     Serial.println(speed);
 
-    for (int i = 0; i < 18; i++) {
-      Serial.print("joint[");
-      Serial.print(i);
-      Serial.print("] = ");
-      Serial.println(g_joints[i]);
-    }
+
+    updateLegs();
 
     sendACK(seq, 18);
     return;
@@ -108,26 +108,3 @@ void uartTask(void *p) {
   }
 }
 
-void setup() {
-  Serial.begin(115200);
-  Serial2.begin(115200, SERIAL_8N1, RXD2, TXD2);
-
-  for (int i = 0; i < 18; i++) {
-    g_joints[i] = 90;
-  }
-
-  xTaskCreate(
-    uartTask,
-    "uartTask",
-    4096,
-    NULL,
-    3,
-    NULL
-  );
-
-  Serial.println("ESP32 UART JSON protocol ready");
-}
-
-void loop() {
-  delay(1000);
-}

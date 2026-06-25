@@ -1,0 +1,14 @@
+#ifndef CONFIG_H
+#define CONFIG_H
+
+#define SDA_PIN 2
+#define SCL_PIN 3
+
+#define RXD2 4
+#define TXD2 5
+
+#define SERVO_MIN_US 550
+#define SERVO_MAX_US 2670
+#define SERVO_FREQ 50
+
+#endif
